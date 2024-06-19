@@ -8,14 +8,19 @@
 	--grey-text: #7c7c7c;
 	--grey-stroke: #979797;
 	--grey-stroke: #979797;
+	background-color: rgb(39, 35, 17);
 }
-* {
+*,
+::before,
+::after {
 	box-sizing: border-box;
+	border-width: 0px;
+	border-style: solid;
+	border-color: rgb(229, 231, 235);
 }
 body {
 	margin: 0;
-	background: #f7f7f7;
-	color: #000;
+	color: #fff;
 	font-family: sans-serif;
 	line-height: 1.2;
 }

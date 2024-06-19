@@ -1,24 +1,36 @@
 <script>
-
-	import { siteTitle, siteDescription } from '$lib/config';
+	import Todo from '../lib/components/TODO.svelte';
+	import Filters from '../lib/components/Filters.svelte';
+	import Table from '../lib/components/Table.svelte';
+	import { siteTitle, siteDescription, siteLongDesc } from '$lib/config';
 </script>
 
 <main>
 	<header>
 		<h1>{siteTitle}</h1>
-		<h3>{siteDescription}</h3>
 	</header>
-
+	<section>
+		<p>{@html siteLongDesc}</p>
+	</section>
+	<section>
+		<Filters />
+		<Table />
+	</section>
 </main>
 
 <style>
+	section p {
+		max-width: 50rem;
+		line-height: 1.3rem;
+		margin: 0 auto;
+	}
 	header {
 		padding: 3rem 0 1rem;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 		position: relative;
-		margin-bottom: 3rem;
+		margin-bottom: 0rem;
 	}
 	@media (min-width: 830px) {
 		header {
@@ -41,7 +53,6 @@
 		margin: 0 auto;
 	}
 	h3 {
-		color: black;
 		font-weight: lighter;
 		margin-top: 0.25rem;
 	}
