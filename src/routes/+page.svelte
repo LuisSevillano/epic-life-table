@@ -22,9 +22,10 @@
 		max-width: 50rem;
 		line-height: 1.3rem;
 		margin: 0 auto;
+		padding: 0 1rem;
 	}
 	header {
-		padding: 3rem 0 1rem;
+		padding: 3rem 1rem 1rem;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
@@ -33,7 +34,7 @@
 	}
 	@media (min-width: 830px) {
 		header {
-			padding: 1rem 0;
+			padding: 1rem 1rem;
 
 			width: auto;
 		}
