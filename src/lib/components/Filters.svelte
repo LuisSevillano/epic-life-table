@@ -49,7 +49,7 @@
 <style>
 	.slider {
 		padding: 0.75rem;
-		border: 1px solid rgb(80, 80, 80);
+		border: 1px solid rgb(60, 55, 25);
 		border-radius: 5px;
 		box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 12px;
 	}

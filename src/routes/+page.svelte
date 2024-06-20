@@ -1,25 +1,17 @@
 <script>
 	import Filters from '../lib/components/Filters.svelte';
 	import Table from '../lib/components/Table.svelte';
+	import CollapsibleSection from '../lib/ui/CollapsibleSection.svelte';
+
 	import { siteTitle, siteDescription, siteLongDesc } from '$lib/config';
 	import { format, getMaxItems } from '../lib/utils.js';
-	import {
-		maintenance,
-		max,
-		data,
-		maxItem,
-		months,
-		defaultData,
-		totalValue,
-		years,
-		sortBy,
-		maxItems,
-		anualSave
-	} from '../stores/stores.js';
+	import { maintenance, data, maxItem, years, maxItems, anualSave } from '../stores/stores.js';
 	$: sample = $data.find((d) => d.nombre === 'Mariano') || $data[0];
+	let width;
+	$: isDesktop = width > 600;
 </script>
 
-<main>
+<main bind:clientWidth={width}>
 	<header>
 		<h1>{siteTitle}</h1>
 	</header>
@@ -41,19 +33,41 @@
 				mayores aportaciones iniciales no pagan mensualidad en {$years} años.
 			{/if}
 		</p>
-		<p>
-			Las aportaciones mensuales se destinan a un fondo de mantenimiento, que proporciona seguridad
-			al grupo, nos protege ante imprevistos y crea una reserva financiera para posibles mejoras. En
-			la situación actual y según estos cálculos, contamos con un presupuesto anual de {format(
-				$anualSave
-			)} €.
-		</p>
-		<p>
-			Tener cantidades similares entre todos los miembros beneficia más al
-			grupo que tener algunas aportaciones iniciales bajas y unas pocas grandes: si la mayoría de
-			aportaciones iniciales se mueve entre 3.000€ y 6.000€ es mejor tener cuatro personas que
-			aportan 4.000 € que dos personas que aportan 8.000 €.
-		</p>
+		{#if isDesktop === true}
+			<p>
+				Las aportaciones mensuales se destinan a un fondo de mantenimiento, que proporciona
+				seguridad al grupo, nos protege ante imprevistos y crea una reserva financiera para posibles
+				mejoras. En la situación actual y según estos cálculos, contamos con un presupuesto anual de {format(
+					$anualSave
+				)} €.
+			</p>
+			<p>
+				Tener cantidades similares entre todos los miembros es más beneficioso que tener algunas
+				aportaciones iniciales bajas y unas pocas grandes: si la mayoría de aportaciones iniciales
+				se mueve entre 3.000€ y 6.000€ es mejor tener cuatro personas que aportan 4.000 € que dos
+				personas que aportan 8.000 €.
+			</p>
+		{:else}
+			<CollapsibleSection headerText={'Más información'}>
+				<p>
+					Las aportaciones mensuales se destinan a un fondo de mantenimiento, que proporciona
+					seguridad al grupo, nos protege ante imprevistos y crea una reserva financiera para
+					posibles mejoras.
+				</p>
+				<p>
+					En la situación actual y según estos cálculos, contamos con un presupuesto anual de {format(
+						$anualSave
+					)} €.
+				</p>
+				<p>
+					Tener cantidades similares entre todos los miembros es más beneficioso que tener algunas
+					aportaciones iniciales bajas y unas pocas grandes: si la mayoría de aportaciones iniciales
+					se mueve entre 3.000€ y 6.000€ es mejor tener cuatro personas que aportan 4.000 € que dos
+					personas que aportan 8.000 €.
+				</p>
+			</CollapsibleSection>
+		{/if}
+
 		<p>
 			Al final de la tabla puedes añadir nuevos participantes si quieres imaginar diferentes
 			escenarios.

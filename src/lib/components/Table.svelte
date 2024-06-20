@@ -191,7 +191,8 @@
 
 <style>
 	hr {
-		border-top: 1px solid rgb(80, 80, 80);
+		border-top: 1px solid rgb(60, 55, 25);
+		margin-top: 1.3rem;
 	}
 	input[type='number'] {
 		color: white;
@@ -214,7 +215,7 @@
 		font-size: 1.2rem;
 		display: inline-block;
 		border-bottom: 1px solid rgb(225, 225, 225);
-		padding-bottom: 0.5rem;
+		padding-bottom: 0.25rem;
 		margin: 0;
 		margin-bottom: 0.5rem;
 	}
@@ -224,6 +225,7 @@
 		overflow: auto;
 		height: 80vh;
 		position: relative;
+		padding: 0 1rem;
 	}
 	thead tr {
 		background-color: #2f3032;
@@ -282,7 +284,6 @@
 		top: 0;
 	}
 	.new-row:hover {
-		outline: 1px solid rgba(255, 255, 255, 0.2);
 	}
 	.cell-editable {
 		animation: all;
