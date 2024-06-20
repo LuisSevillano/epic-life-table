@@ -3,7 +3,7 @@ import { members } from '../lib/data.js';
 
 export const years = writable(6);
 export const months = derived(years, ($years) => $years * 12);
-export const maintenance = writable(0);
+export const maintenance = writable(5);
 export const defaultData = writable(members);
 
 export const max = derived(defaultData, ($defaultData) =>
@@ -25,7 +25,6 @@ const sorting = derived(sortBy, ($sortBy) => {
 export const data = derived(
 	[maintenance, max, months, defaultData, sorting],
 	([$maintenance, $max, $months, $defaultData, $sorting]) => {
-		console.log('update data');
 		return $defaultData
 			.map((d, i) => {
 				const value = d['inversión inicial'];
@@ -60,4 +59,8 @@ export const maxItemIndex = derived([data, max], ([$data, $max]) =>
 export const maxItem = derived(
 	[data, maxItemIndex],
 	([$data, $maxItemIndex]) => $data[$maxItemIndex]
+);
+
+export const maxItems = derived([data, max], ([$data, $max]) =>
+	$data.filter((d) => d.value === $max)
 );

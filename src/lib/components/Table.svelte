@@ -9,9 +9,11 @@
 		defaultData,
 		totalValue,
 		years,
-		sortBy
+		sortBy,
+		maxItems
 	} from '../../stores/stores.js';
 	import { randomNames } from '../data.js';
+	import { format, getMaxItems } from '../utils.js';
 	const cols = [
 		'id',
 		'nombre',
@@ -22,6 +24,10 @@
 		'Total invertido'
 	];
 	let newRow = [...cols];
+	let value = '';
+	let submittedValue = null;
+
+	$: console.log(value);
 
 	function getRandomName() {
 		return randomNames[Math.floor(Math.random() * randomNames.length)];
@@ -57,20 +63,13 @@
 		if (!isNaN(value)) {
 			$defaultData = [...$defaultData, getNewRow(newRow)];
 			newRow = [...cols];
+			submittedValue = null;
 		}
 	}
+
 	function removeRow(index) {
 		$defaultData.splice(index, 1);
 		$defaultData = $defaultData;
-	}
-
-	function format(n) {
-		if (n !== undefined) {
-			return n.toLocaleString('es-AR', {
-				minimumFractionDigits: 0,
-				maximumFractionDigits: 1
-			});
-		}
 	}
 
 	function sort(column) {
@@ -84,15 +83,27 @@
 			$sortBy = { col: column, ascending: false };
 		}
 	}
+
+	$: submittedValue, addRow();
 </script>
 
 <div class="table-wrapper">
 	<div class="table-details top">
 		<p>
-			* La máxima aportación la realiza {$maxItem['nombre']} con {format(
-				$maxItem['inversión inicial']
-			)} €
+			{#if $maxItems.length > 1}
+				* Las máximas aportaciones las realizan {getMaxItems($maxItems)} con {format(
+					$maxItem['inversión inicial']
+				)} €
+			{:else}
+				* La máxima aportación la realiza {$maxItem['nombre']} con {format(
+					$maxItem['inversión inicial']
+				)} €
+				<!-- else content here -->
+			{/if}
 		</p>
+	</div>
+	<div class="arrow">
+		<div class="pagination-arrow move">→</div>
 	</div>
 	<table>
 		<thead>
@@ -123,7 +134,9 @@
 					{#if index === 2}
 						<td class="cell-editable" style="cursor:pointer">
 							<div>
-								<input type="number" name="" id="" placeholder={column} bind:value={column} />
+								<form on:submit|preventDefault={() => (submittedValue = value)}>
+									<input type="number" name="" id="" placeholder={column} bind:value={column} />
+								</form>
 							</div>
 						</td>
 					{:else}
@@ -140,32 +153,43 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="table-details">
-		<div>
-			<h4>Explicación columnas</h4>
-			<p>
-				<b>Diff. maxima inversión</b>: Cantidad incial aportada menos la máxima inversión realizada
-				({$maxItem['nombre']} con {format($maxItem['inversión inicial'])} €).
-			</p>
-			<p>
-				<b>Compensación mensual</b>: Differencia entre la maxima inversión dividido entre el número
-				de meses de compensación ({$months}).
-			</p>
-			<p>
-				<b>Cuota mensual</b>: Cuota mensual mantenimiento ({$maintenance} €) menos la Cuota de compensación
-				mensual. Es la cantidad que tendría que pagar cada persona al mes durante {$years} años.
-			</p>
-		</div>
-		<div class="total-money-box-father">
-			<div class="total-money-box">
-				<p class="total-money"><span>{format($totalValue)} €</span></p>
-				<p>Presupuesto total</p>
-			</div>
+</div>
+<div class="table-details">
+	<div>
+		<h4>Explicación de las columnas</h4>
+		<p>
+			<b>Diff. maxima inversión</b>: Cantidad incial aportada menos la máxima inversión realizada ({$maxItem[
+				'nombre'
+			]} con {format($maxItem['inversión inicial'])} €).
+		</p>
+		<p>
+			<b>Compensación mensual</b>: Differencia entre la maxima inversión dividido entre el número de
+			meses de compensación ({$months}).
+		</p>
+		<p>
+			<b>Cuota mensual</b>: Cuota mensual mantenimiento ({$maintenance} €) menos la Cuota de compensación
+			mensual. Es la cantidad que tendría que pagar cada persona al mes durante {$years} años.
+		</p>
+		<hr />
+		<p>
+			* <small
+				>Estos datos vienen del formulario que rellenamos la semana del 17 de junio de 2017. Se han
+				anonimizado los datos.</small
+			>
+		</p>
+	</div>
+	<div class="total-money-box-father">
+		<div class="total-money-box">
+			<p class="total-money"><span>{format($totalValue)} €</span></p>
+			<p>Presupuesto total</p>
 		</div>
 	</div>
 </div>
 
 <style>
+	hr {
+		border-top: 1px solid rgb(80, 80, 80);
+	}
 	input[type='number'] {
 		color: white;
 		background-color: rgb(55 65 81 / 1);
@@ -176,7 +200,10 @@
 		outline: none;
 		max-width: 145px;
 	}
-
+	th:first-child,
+	td:first-child {
+		display: none;
+	}
 	td div {
 		max-height: 50px;
 	}
@@ -191,7 +218,8 @@
 	.table-wrapper {
 		max-width: 70rem;
 		margin: 0 auto;
-		overflow-x: clip;
+		overflow: auto;
+		height: 80vh;
 		position: relative;
 	}
 	thead tr {
@@ -203,6 +231,7 @@
 	thead tr th {
 		font-weight: lighter;
 		cursor: pointer;
+		vertical-align: bottom;
 	}
 	tbody tr:nth-child(odd) {
 		background-color: #2f3032;
@@ -230,19 +259,11 @@
 	th {
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
-		padding-left: 0.15rem;
-		padding-right: 0.15rem;
+		padding-left: 0.25rem;
+		padding-right: 0.25rem;
 		text-align: left;
 	}
-	@media (min-width: 600px) {
-		th,
-		td {
-			padding-top: 1rem;
-			padding-bottom: 1rem;
-			padding-left: 1.5rem;
-			padding-right: 1.5rem;
-		}
-	}
+
 	/* td {
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -255,7 +276,6 @@
 
 	thead tr:first-child {
 		position: sticky;
-		position: -webkit-sticky;
 		top: 0;
 	}
 	.new-row:hover {
@@ -268,14 +288,13 @@
 		outline: 0px solid rgba(255, 255, 255, 0.5);
 	}
 	.total-money-box-father {
-		display: flex;
-		justify-content: flex-end;
+		width: 100%;
 	}
 	.total-money {
 		font-size: 3rem;
 	}
 	.total-money-box p {
-		margin: 1rem;
+		margin: 0rem;
 	}
 	.total-money-box {
 		display: flex;
@@ -285,23 +304,86 @@
 		border: 1px solid rgb(80, 80, 80);
 		border-radius: 5px;
 		box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
-	}
-	.total-money-box span {
+		margin: 1.5rem 0;
 	}
 	.total-money-box p {
 		display: inline-block;
 	}
+	.table-wrapper > .table-details p {
+		max-width: none;
+	}
 	.table-details p {
-		margin-bottom: 0;
 		max-width: 500px;
 	}
 	.table-details {
+		max-width: 50rem;
+		margin-left: auto;
+		margin-right: auto;
+		gap: 1rem;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 		align-items: flex-start;
+		flex-direction: column-reverse;
 	}
 	.table-details.top {
 		margin: 1rem 0;
+	}
+	@media (min-width: 600px) {
+		.total-money-box-father {
+			width: auto;
+		}
+		.table-wrapper {
+			height: auto;
+			overflow: visible;
+		}
+		.arrow {
+			display: flex;
+		}
+		.total-money-box {
+			margin: 0;
+		}
+		.table-details {
+			flex-direction: row;
+		}
+		th,
+		td {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+			padding-left: 1.5rem;
+			padding-right: 1.5rem;
+		}
+		.table-details p {
+			margin-bottom: 0;
+		}
+	}
+	.arrow {
+		display: none;
+		align-items: center;
+		align-content: center;
+		justify-content: center;
+		background: #2f3032;
+		padding: 1rem;
+		width: 10px;
+		height: 10px;
+		position: absolute;
+		z-index: 1;
+	}
+	.pagination-arrow {
+		width: 20px;
+		height: 20px;
+		z-index: 1;
+		margin-right: 5px;
+	}
+	.move {
+		animation: move 1s infinite;
+	}
+	@keyframes move {
+		0% {
+			transform: translateX(0);
+		}
+		50% {
+			transform: translateX(5px);
+		}
 	}
 </style>
