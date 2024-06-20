@@ -16,7 +16,6 @@
 	box-sizing: border-box;
 	border-width: 0px;
 	border-style: solid;
-	border-color: rgb(229, 231, 235);
 }
 body {
 	margin: 0;
@@ -34,6 +33,9 @@ footer {
 main {
 	padding: 1rem;
 	position: relative;
+}
+p {
+	line-height: 1.4rem;
 }
 
 @media (min-width: 380px) {

@@ -47,6 +47,12 @@
 <!-- markup (zero or more items) goes here -->
 
 <style>
+	.slider {
+		padding: 1rem;
+		border: 1px solid rgb(80, 80, 80);
+		border-radius: 5px;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+	}
 	/* LAYOUT */
 	.parent {
 		display: grid;
@@ -64,6 +70,7 @@
 	.cuota,
 	.casos {
 		display: grid;
+		gap: 1rem;
 	}
 
 	.header {
@@ -85,7 +92,7 @@
 		}
 		.sliders {
 			grid-area: 2 / 1 / 6 / 2;
-			padding-top: 1rem;
+			padding: 1rem;
 			grid-template-columns: repeat(2, 1fr);
 			grid-column-gap: 2rem;
 		}
@@ -138,7 +145,7 @@
 	.slider-sub {
 		font-size: 1rem;
 		font-weight: 200;
-		margin-bottom: 1.5rem;
+		margin-bottom: 1rem;
 		line-height: 1.3rem;
 		margin-top: -1.2rem;
 		color: #c7c7c7;

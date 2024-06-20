@@ -9,7 +9,7 @@ const config = {
 		appDir: 'app',
 		adapter: adapter(),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/post-graphics-feed' : ''
+			base: process.env.NODE_ENV === 'production' ? '/epic-life-table' : ''
 		}
 	}
 };

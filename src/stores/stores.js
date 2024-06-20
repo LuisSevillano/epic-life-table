@@ -9,6 +9,7 @@ export const defaultData = writable(members);
 export const max = derived(defaultData, ($defaultData) =>
 	Math.max(...$defaultData.map((d) => d['inversión inicial']))
 );
+
 export const data = derived(
 	[maintenance, max, months, defaultData],
 	([$maintenance, $max, $months, $defaultData]) =>
@@ -24,16 +25,18 @@ export const data = derived(
 				'inversión inicial': value,
 				value,
 				name: d.nombre,
-				'Diferencia con respecto a la máxima inversión': diff,
-				'Cuota de compensación mensual': compensacionMensual,
-				'Cuota mensual total': cuotaMensualTotal,
+				'Diff. maxima inversión': diff,
+				'Compensación mensual': compensacionMensual,
+				'Cuota mensual': cuotaMensualTotal,
 				'Total invertido': total
 			};
 
 			return output;
 		})
 );
-
+export const totalValue = derived(data, ($data) =>
+	$data.reduce((partialSum, a) => partialSum + a['inversión inicial'], 0)
+);
 export const maxItemIndex = derived([data, max], ([$data, $max]) =>
 	$data.map((d) => d['inversión inicial']).indexOf($max)
 );

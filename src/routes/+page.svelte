@@ -1,5 +1,4 @@
 <script>
-	import Todo from '../lib/components/TODO.svelte';
 	import Filters from '../lib/components/Filters.svelte';
 	import Table from '../lib/components/Table.svelte';
 	import { siteTitle, siteDescription, siteLongDesc } from '$lib/config';
