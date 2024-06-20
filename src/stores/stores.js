@@ -64,3 +64,8 @@ export const maxItem = derived(
 export const maxItems = derived([data, max], ([$data, $max]) =>
 	$data.filter((d) => d.value === $max)
 );
+
+export const anualSave = derived(
+	data,
+	($data) => $data.reduce((partialSum, a) => partialSum + a['Cuota mensual'], 0) * 12
+);

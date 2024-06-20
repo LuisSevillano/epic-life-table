@@ -13,7 +13,8 @@
 		totalValue,
 		years,
 		sortBy,
-		maxItems
+		maxItems,
+		anualSave
 	} from '../stores/stores.js';
 	$: sample = $data.find((d) => d.nombre === 'Mariano') || $data[0];
 </script>
@@ -26,12 +27,32 @@
 		<p>{@html siteLongDesc}</p>
 		<p>
 			Por ejemplo, partiendo de los datos del formulario inicial* y una vez anonimizadas las
-			cantidades, {sample.name}, quien aporta inicialmente {format(sample.value)} €, tiene que pagar
+			cantidades originales, {sample.name}, quien aporta inicialmente {format(sample.value)} €, tiene
+			que pagar
 			<span class="amount">
-				{format(sample['Cuota mensual'])}€ / mes
+				{format(sample['Cuota mensual'])} €/mes
 			</span>
-			durante <span class="amount small">{$years}</span> años para igualar la máxima aportación
+			durante <span class="amount small">{$years} años</span> para igualar la máxima aportación
 			realizada por {getMaxItems($maxItems)} ({format($maxItem.value)} €).
+			{#if $maintenance !== 0}
+				Esta cantidad incluye <span class="amount small">{$maintenance} €</span> de mantenimiento.
+			{:else}
+				Esta cantidad no incluye ningún gasto de mantenimiento. Aquellas peronas que realizan las
+				mayores aportaciones iniciales no pagan mensualidad en {$years} años.
+			{/if}
+		</p>
+		<p>
+			Las aportaciones mensuales se destinan a un fondo de mantenimiento, que proporciona seguridad
+			al grupo, nos protege ante imprevistos y crea una reserva financiera para posibles mejoras. En
+			la situación actual y según estos cálculos, contamos con un presupuesto anual de {format(
+				$anualSave
+			)} €.
+		</p>
+		<p>
+			Tener cantidades similares entre todos los miembros beneficia más al
+			grupo que tener algunas aportaciones iniciales bajas y unas pocas grandes: si la mayoría de
+			aportaciones iniciales se mueve entre 3.000€ y 6.000€ es mejor tener cuatro personas que
+			aportan 4.000 € que dos personas que aportan 8.000 €.
 		</p>
 		<p>
 			Al final de la tabla puedes añadir nuevos participantes si quieres imaginar diferentes
@@ -47,11 +68,10 @@
 <style>
 	.amount {
 		text-align: center;
-		width: 115px;
+		min-width: 115px;
 		background-color: rgb(100, 100, 100);
 		color: #fff;
 		max-width: 100%;
-		overflow-x: auto;
 		vertical-align: middle;
 		-webkit-border-radius: 5px;
 		-moz-border-radius: 5px;
@@ -80,15 +100,13 @@
 		padding: 0 0.5em;
 	}
 	.amount.small {
-		width: 32px;
-	}
-	section {
-		padding: 0 1rem;
+		min-width: 74px;
 	}
 	section p {
 		max-width: 50rem;
 		margin-left: auto;
 		margin-right: auto;
+		padding: 0 1rem;
 	}
 	header {
 		padding: 3rem 1rem 1rem;
@@ -100,7 +118,7 @@
 	}
 	@media (min-width: 830px) {
 		header {
-			padding: 1rem 1rem;
+			padding: 0 1rem;
 
 			width: auto;
 		}

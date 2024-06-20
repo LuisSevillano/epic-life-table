@@ -1,4 +1,4 @@
-export const siteTitle = 'Propuesta de compensación de inversiones en Epic Life';
+export const siteTitle = 'Ajuste de aportaciones en Epic Life';
 export const siteDescription =
 	'Formulario para calcular un posible equilibrio en las inversiones iniciales';
 

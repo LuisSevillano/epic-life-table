@@ -90,17 +90,19 @@
 
 <div class="table-wrapper">
 	<div class="table-details top">
+		<p>A continuación puedes ver una tabla con las cantidades recogidas en el primer GoogleForm.</p>
 		<p>
-			{#if $maxItems.length > 1}
-				* Las máximas aportaciones las realizan {getMaxItems($maxItems)} con {format(
-					$maxItem['inversión inicial']
-				)} €
-			{:else}
-				* La máxima aportación la realiza {$maxItem['nombre']} con {format(
-					$maxItem['inversión inicial']
-				)} €
-				<!-- else content here -->
-			{/if}
+			<small>
+				{#if $maxItems.length > 1}
+					* Las máximas aportaciones las realizan {getMaxItems($maxItems)} con {format(
+						$maxItem['inversión inicial']
+					)} €
+				{:else}
+					* La máxima aportación la realiza {$maxItem['nombre']} con {format(
+						$maxItem['inversión inicial']
+					)} €
+				{/if}
+			</small>
 		</p>
 	</div>
 	<div class="arrow">
@@ -174,7 +176,7 @@
 		<hr />
 		<p>
 			* <small
-				>Estos datos vienen del formulario que rellenamos la semana del 17 de junio de 2017. Se han
+				>Estos datos vienen del GoogleForm. que rellenamos la semana del 17 de junio de 2017. Se han
 				anonimizado los datos.</small
 			>
 		</p>

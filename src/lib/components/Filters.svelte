@@ -51,7 +51,7 @@
 		padding: 0.75rem;
 		border: 1px solid rgb(80, 80, 80);
 		border-radius: 5px;
-		box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 12px;
 	}
 	/* LAYOUT */
 	.parent {
@@ -68,6 +68,7 @@
 	.sliders {
 		display: grid;
 		gap: 1rem;
+		padding: 0 1rem;
 	}
 
 	.header {
