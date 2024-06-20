@@ -25,7 +25,7 @@
 	<section>
 		<p>{@html siteLongDesc}</p>
 		<p>
-			Por ejemplo, partiendo de los datos del formulario inicial y una vez anonimizadas las
+			Por ejemplo, partiendo de los datos del formulario inicial* y una vez anonimizadas las
 			cantidades, {sample.name}, quien aporta inicialmente {format(sample.value)} €, tiene que pagar
 			<span class="amount">
 				{format(sample['Cuota mensual'])}€ / mes

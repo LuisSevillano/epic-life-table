@@ -67,7 +67,8 @@
 		}
 	}
 
-	function removeRow(index) {
+	function removeRow(row) {
+		const index = $defaultData.findIndex((d) => d.nombre === row.nombre);
 		$defaultData.splice(index, 1);
 		$defaultData = $defaultData;
 	}
@@ -125,7 +126,7 @@
 						{/if}
 					{/each}
 					<td class="icon-cell">
-						<Icon name={'subtract'} on:click={() => removeRow(index)} />
+						<Icon name={'subtract'} on:click={() => removeRow($data[index])} />
 					</td>
 				</tr>
 			{/each}
@@ -135,7 +136,7 @@
 						<td class="cell-editable" style="cursor:pointer">
 							<div>
 								<form on:submit|preventDefault={() => (submittedValue = value)}>
-									<input type="number" name="" id="" placeholder={column} bind:value={column} />
+									<input type="number" placeholder={column} bind:value={column} />
 								</form>
 							</div>
 						</td>
