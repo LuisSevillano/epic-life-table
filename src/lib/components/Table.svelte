@@ -1,6 +1,6 @@
 <script>
-	import { years, maintenance } from '../../stores/stores.js';
-	import { members } from '../data.js';
+	import { years, maintenance, max, data, maxItemIndex, maxItem } from '../../stores/stores.js';
+	import { randomNames } from '../data.js';
 	const cols = [
 		'id',
 		'nombre',
@@ -10,39 +10,56 @@
 		'Cuota mensual total',
 		'Total invertido'
 	];
-	const max = Math.max(...members.map((d) => d['inversión inicial']));
-	const maxItemIndex = members.map((d) => d['inversión inicial']).indexOf(max);
-	const maxItem = members[maxItemIndex];
+	console.log($maxItemIndex);
+	let newRow = [...cols];
 
-	$: months = $years * 12;
+	function getRandomName() {
+		return randomNames[Math.floor(Math.random() * randomNames.length)];
+	}
 
-	$: data = members.map((d, i) => {
-		const value = d['inversión inicial'];
+	function getNewRow(incomingData) {
+		let value = 0;
+		try {
+			value = parseFloat(incomingData[2]);
+		} catch (error) {}
 		const diff = value - max;
 		const compensacionMensual = diff / months;
 		const cuotaMensualTotal = $maintenance - compensacionMensual;
 		const total = value + cuotaMensualTotal * months;
+		const i = data.length;
+		const nombre = getRandomName();
 		return {
 			id: i + 1,
-			nombre: d.nombre,
+			nombre,
 			'inversión inicial': value,
 			value,
-			name: d.nombre,
+			name: nombre,
 			'Diferencia con respecto a la máxima inversión': diff,
 			'Cuota de compensación mensual': compensacionMensual,
 			'Cuota mensual total': cuotaMensualTotal,
 			'Total invertido': total
 		};
-	});
+	}
+
+	function addRow() {
+		let value = parseFloat(newRow[2]);
+		if (!isNaN(value)) {
+			$max = Math.max(value, Math.max(...$data.map((d) => d['inversión inicial'])));
+			const incomingRow = getNewRow(newRow);
+			$data = [...$data, incomingRow];
+			newRow = [...cols];
+		}
+	}
 
 	function format(n) {
 		if (n !== undefined) {
-			return n.toLocaleString('pt-PT', {
-				minimumFractionDigits: 2,
-				maximumFractionDigits: 2
+			return n.toLocaleString('es-AR', {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 1
 			});
 		}
 	}
+
 	let sortBy = { col: 'id', ascending: true };
 	$: sort = (column) => {
 		if (sortBy.col == column) {
@@ -52,13 +69,12 @@
 			sortBy.ascending = true;
 		}
 
-		// Modifier to sorting function for ascending or descending
 		let sortModifier = sortBy.ascending ? 1 : -1;
 
 		let sort = (a, b) =>
 			a[column] < b[column] ? -1 * sortModifier : a[column] > b[column] ? 1 * sortModifier : 0;
 
-		data = data.sort(sort);
+		$data = $data.sort(sort);
 	};
 </script>
 
@@ -72,21 +88,35 @@
 			>
 		</thead>
 		<tbody>
-			{#each data as person, index}
+			{#each $data as person, index}
 				<tr>
 					{#each cols as colName, j}
 						{#if j === 0}
-							<td>{data[index][colName]}</td>
+							<td>{$data[index][colName]}</td>
 						{:else}
-							<td>{format(data[index][colName])}</td>
+							<td>{format($data[index][colName])}</td>
 						{/if}
 					{/each}
 				</tr>
 			{/each}
+			<!-- <tr style="color: grey">
+				{#each newRow as column, index}
+					{#if index === 2}
+						<td contenteditable="true" bind:innerHTML={column} />
+					{:else}
+						<td>{column}</td>
+					{/if}
+				{/each}
+				<button on:click={addRow}>add</button>
+			</tr> -->
 		</tbody>
 	</table>
 	<div class="table-details">
-		<p>* La máxima aportación la realiza {maxItem.name} con {maxItem.value} €</p>
+		<p>
+			* La máxima aportación la realiza {$maxItem['nombre']} con {format(
+				$maxItem['inversión inicial']
+			)} €
+		</p>
 		<h4>Explicación columnas</h4>
 		<p>
 			<b>Diferencia con respecto a la máxima inversión</b>: Cantidad aportada menos la máxima
@@ -96,10 +126,7 @@
 			<b>Cuota de compensación mensual</b>: Diferencia con respecto a la máxima inversión dividido
 			entre el número de meses de compensación
 		</p>
-		<p>
-			<b>Cuota mensual total</b>: Cuota mensual mantenimiento ({$maintenance}€) menos la Cuota de
-			compensación mensual
-		</p>
+		<p></p>
 	</div>
 </div>
 
@@ -132,6 +159,7 @@
 		text-indent: 0px;
 		border-color: inherit;
 		border-collapse: collapse;
+		margin-bottom: 1rem;
 	}
 	th {
 		cursor: pointer;

@@ -1,4 +1,38 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
+import { members } from '../lib/data.js';
 
 export const years = writable(6);
+export const months = derived(years, ($years) => $years * 12);
 export const maintenance = writable(0);
+
+export const max = writable(Math.max(...members.map((d) => d['inversión inicial'])));
+export const data = derived([maintenance, max, months], ([$maintenance, $max, $months]) =>
+	members.map((d, i) => {
+		const value = d['inversión inicial'];
+		const diff = value - $max;
+		const compensacionMensual = diff / $months;
+		const cuotaMensualTotal = $maintenance - compensacionMensual;
+		const total = value + cuotaMensualTotal * $months;
+		const output = {
+			id: i + 1,
+			nombre: d.nombre,
+			'inversión inicial': value,
+			value,
+			name: d.nombre,
+			'Diferencia con respecto a la máxima inversión': diff,
+			'Cuota de compensación mensual': compensacionMensual,
+			'Cuota mensual total': cuotaMensualTotal,
+			'Total invertido': total
+		};
+
+		return output;
+	})
+);
+
+export const maxItemIndex = derived([data, max], ([$data, $max]) =>
+	$data.map((d) => d['inversión inicial']).indexOf($max)
+);
+export const maxItem = derived(
+	[data, maxItemIndex],
+	([$data, $maxItemIndex]) => $data[$maxItemIndex]
+);
