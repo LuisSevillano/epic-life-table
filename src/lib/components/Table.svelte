@@ -1,5 +1,5 @@
 <script>
-	import { years, maintenance, max, data, maxItemIndex, maxItem } from '../../stores/stores.js';
+	import { years, maintenance, max, data, maxItemIndex, maxItem, months,defaultData } from '../../stores/stores.js';
 	import { randomNames } from '../data.js';
 	const cols = [
 		'id',
@@ -10,8 +10,8 @@
 		'Cuota mensual total',
 		'Total invertido'
 	];
-	console.log($maxItemIndex);
 	let newRow = [...cols];
+	$:console.log($maxItemIndex);
 
 	function getRandomName() {
 		return randomNames[Math.floor(Math.random() * randomNames.length)];
@@ -22,11 +22,12 @@
 		try {
 			value = parseFloat(incomingData[2]);
 		} catch (error) {}
-		const diff = value - max;
+		const newMax = Math.max($max, value)
+		const diff = value - newMax;
 		const compensacionMensual = diff / months;
 		const cuotaMensualTotal = $maintenance - compensacionMensual;
 		const total = value + cuotaMensualTotal * months;
-		const i = data.length;
+		const i = $data.length;
 		const nombre = getRandomName();
 		return {
 			id: i + 1,
@@ -44,9 +45,7 @@
 	function addRow() {
 		let value = parseFloat(newRow[2]);
 		if (!isNaN(value)) {
-			$max = Math.max(value, Math.max(...$data.map((d) => d['inversión inicial'])));
-			const incomingRow = getNewRow(newRow);
-			$data = [...$data, incomingRow];
+			$defaultData = [...$defaultData,getNewRow(newRow)]
 			newRow = [...cols];
 		}
 	}
@@ -99,16 +98,16 @@
 					{/each}
 				</tr>
 			{/each}
-			<!-- <tr style="color: grey">
+			<tr style="color: grey">
 				{#each newRow as column, index}
 					{#if index === 2}
-						<td contenteditable="true" bind:innerHTML={column} />
+						<td style="cursor:pointer" contenteditable="true" bind:innerHTML={column} />
 					{:else}
 						<td>{column}</td>
 					{/if}
 				{/each}
 				<button on:click={addRow}>add</button>
-			</tr> -->
+			</tr>
 		</tbody>
 	</table>
 	<div class="table-details">

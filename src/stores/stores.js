@@ -4,29 +4,34 @@ import { members } from '../lib/data.js';
 export const years = writable(6);
 export const months = derived(years, ($years) => $years * 12);
 export const maintenance = writable(0);
+export const defaultData = writable(members);
 
-export const max = writable(Math.max(...members.map((d) => d['inversión inicial'])));
-export const data = derived([maintenance, max, months], ([$maintenance, $max, $months]) =>
-	members.map((d, i) => {
-		const value = d['inversión inicial'];
-		const diff = value - $max;
-		const compensacionMensual = diff / $months;
-		const cuotaMensualTotal = $maintenance - compensacionMensual;
-		const total = value + cuotaMensualTotal * $months;
-		const output = {
-			id: i + 1,
-			nombre: d.nombre,
-			'inversión inicial': value,
-			value,
-			name: d.nombre,
-			'Diferencia con respecto a la máxima inversión': diff,
-			'Cuota de compensación mensual': compensacionMensual,
-			'Cuota mensual total': cuotaMensualTotal,
-			'Total invertido': total
-		};
+export const max = derived(defaultData, ($defaultData) =>
+	Math.max(...$defaultData.map((d) => d['inversión inicial']))
+);
+export const data = derived(
+	[maintenance, max, months, defaultData],
+	([$maintenance, $max, $months, $defaultData]) =>
+		$defaultData.map((d, i) => {
+			const value = d['inversión inicial'];
+			const diff = value - $max;
+			const compensacionMensual = diff / $months;
+			const cuotaMensualTotal = $maintenance - compensacionMensual;
+			const total = value + cuotaMensualTotal * $months;
+			const output = {
+				id: i + 1,
+				nombre: d.nombre,
+				'inversión inicial': value,
+				value,
+				name: d.nombre,
+				'Diferencia con respecto a la máxima inversión': diff,
+				'Cuota de compensación mensual': compensacionMensual,
+				'Cuota mensual total': cuotaMensualTotal,
+				'Total invertido': total
+			};
 
-		return output;
-	})
+			return output;
+		})
 );
 
 export const maxItemIndex = derived([data, max], ([$data, $max]) =>
