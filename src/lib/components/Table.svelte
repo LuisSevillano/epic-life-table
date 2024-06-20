@@ -9,6 +9,7 @@
 		defaultData,
 		totalValue,
 		years,
+		sortBy
 	} from '../../stores/stores.js';
 	import { randomNames } from '../data.js';
 	const cols = [
@@ -72,22 +73,17 @@
 		}
 	}
 
-	let sortBy = { col: 'id', ascending: true };
-	$: sort = (column) => {
-		if (sortBy.col == column) {
-			sortBy.ascending = !sortBy.ascending;
+	function sort(column) {
+		if ($sortBy !== undefined) {
+			if ($sortBy.col === column) {
+				$sortBy = { col: column, ascending: !$sortBy.ascending };
+			} else {
+				$sortBy = { col: column, ascending: false };
+			}
 		} else {
-			sortBy.col = column;
-			sortBy.ascending = true;
+			$sortBy = { col: column, ascending: false };
 		}
-
-		let sortModifier = sortBy.ascending ? 1 : -1;
-
-		let sort = (a, b) =>
-			a[column] < b[column] ? -1 * sortModifier : a[column] > b[column] ? 1 * sortModifier : 0;
-
-		$data = $data.sort(sort);
-	};
+	}
 </script>
 
 <div class="table-wrapper">
@@ -102,7 +98,7 @@
 		<thead>
 			<tr>
 				{#each cols as colHeader}
-					<th on:click={sort(colHeader)}>{colHeader}</th>
+					<th on:click={() => sort(colHeader)}>{colHeader}</th>
 				{/each}
 				<th></th>
 			</tr>
@@ -147,16 +143,18 @@
 	<div class="table-details">
 		<div>
 			<h4>Explicación columnas</h4>
-		<p>
-			<b>Diff. maxima inversión</b>: Cantidad incial aportada menos la máxima inversión realizada ({$maxItem['nombre']} con {format($maxItem['inversión inicial'])} €).
-		</p>
-		<p>
-			<b>Compensación mensual</b>: Differencia entre la maxima inversión dividido entre el número de meses de
-			compensación ({$months}).
-		</p>
-		<p>
-			<b>Cuota mensual</b>: Cuota mensual mantenimiento ({$maintenance} €) menos la Cuota de compensación mensual. Es la cantidad que tendría que pagar cada persona al mes durante {$years} años.
-		</p>
+			<p>
+				<b>Diff. maxima inversión</b>: Cantidad incial aportada menos la máxima inversión realizada
+				({$maxItem['nombre']} con {format($maxItem['inversión inicial'])} €).
+			</p>
+			<p>
+				<b>Compensación mensual</b>: Differencia entre la maxima inversión dividido entre el número
+				de meses de compensación ({$months}).
+			</p>
+			<p>
+				<b>Cuota mensual</b>: Cuota mensual mantenimiento ({$maintenance} €) menos la Cuota de compensación
+				mensual. Es la cantidad que tendría que pagar cada persona al mes durante {$years} años.
+			</p>
 		</div>
 		<div class="total-money-box-father">
 			<div class="total-money-box">
@@ -204,6 +202,7 @@
 	}
 	thead tr th {
 		font-weight: lighter;
+		cursor: pointer;
 	}
 	tbody tr:nth-child(odd) {
 		background-color: #2f3032;
