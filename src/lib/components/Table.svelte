@@ -156,35 +156,34 @@
 			</tr>
 		</tbody>
 	</table>
-</div>
-<div class="table-details">
-	<div>
-		<h4>Explicación de las columnas</h4>
-		<p>
-			<b>Diff. maxima inversión</b>: Cantidad incial aportada menos la máxima inversión realizada ({$maxItem[
-				'nombre'
-			]} con {format($maxItem['inversión inicial'])} €).
-		</p>
-		<p>
-			<b>Compensación mensual</b>: Differencia entre la maxima inversión dividido entre el número de
-			meses de compensación ({$months}).
-		</p>
-		<p>
-			<b>Cuota mensual</b>: Cuota mensual mantenimiento ({$maintenance} €) menos la Cuota de compensación
-			mensual. Es la cantidad que tendría que pagar cada persona al mes durante {$years} años.
-		</p>
-		<hr />
-		<p>
-			* <small
-				>Estos datos vienen del GoogleForm. que rellenamos la semana del 17 de junio de 2017. Se han
-				anonimizado los datos.</small
-			>
-		</p>
-	</div>
-	<div class="total-money-box-father">
-		<div class="total-money-box">
-			<p class="total-money"><span>{format($totalValue)} €</span></p>
-			<p>Presupuesto total</p>
+	<div class="table-details">
+		<div>
+			<h4>Explicación de las columnas</h4>
+			<p>
+				<b>Diff. maxima inversión</b>: Cantidad incial aportada menos la máxima inversión realizada
+				({$maxItem['nombre']} con {format($maxItem['inversión inicial'])} €).
+			</p>
+			<p>
+				<b>Compensación mensual</b>: Differencia entre la maxima inversión dividido entre el número
+				de meses de compensación ({$months}).
+			</p>
+			<p>
+				<b>Cuota mensual</b>: Cuota mensual mantenimiento ({$maintenance} €) menos la Cuota de compensación
+				mensual. Es la cantidad que tendría que pagar cada persona al mes durante {$years} años.
+			</p>
+			<hr />
+			<p>
+				* <small
+					>Estos datos vienen del GoogleForm. que rellenamos la semana del 17 de junio de 2017. Se
+					han anonimizado los datos.</small
+				>
+			</p>
+		</div>
+		<div class="total-money-box-father">
+			<div class="total-money-box">
+				<p class="total-money"><span>{format($totalValue)} €</span></p>
+				<p>Presupuesto total</p>
+			</div>
 		</div>
 	</div>
 </div>
