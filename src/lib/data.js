@@ -19,13 +19,13 @@ export const members = [
 	{ nombre: 'Alba', 'inversión inicial': 8000 },
 	{ nombre: 'Sergio', 'inversión inicial': 4000 },
 	{ nombre: 'Carmen', 'inversión inicial': 3000 },
-	{ nombre: 'Natalia', 'inversión inicial': 3000 }
+	{ nombre: 'Natalia', 'inversión inicial': 3000 },
+	{ nombre: 'Ricardo', 'inversión inicial': 3000 }
 ];
 
 export const randomNames = [
 	'Antonio',
 	'Marta',
-	'Ricardo',
 	'Ana',
 	'Víctor',
 	'Sonia',

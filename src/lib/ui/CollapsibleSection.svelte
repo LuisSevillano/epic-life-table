@@ -11,8 +11,8 @@
 		<button aria-expanded={expanded} on:click={() => (expanded = !expanded)}
 			>{headerText}
 			<svg viewBox="0 0 20 20" fill="none">
-				<path class="vert" d="M10 1V19" stroke=" rgb(140, 125, 65)" stroke-width="2" />
-				<path d="M1 10L19 10" stroke=" rgb(140, 125, 65)" stroke-width="2" />
+				<path class="vert" d="M10 1V19" stroke=" rgb(182 165 99)" stroke-width="2" />
+				<path d="M1 10L19 10" stroke=" rgb(182 165 99)" stroke-width="2" />
 			</svg>
 		</button>
 	</h3>
@@ -41,7 +41,7 @@
 		cursor: pointer;
 		background-color: var(--background, rgb(60, 55, 25));
 		color: var(--gray-darkest, #fff);
-		color: rgb(140, 125, 65);
+		color: rgb(182 165 99);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

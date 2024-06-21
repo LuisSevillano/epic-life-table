@@ -1,6 +1,6 @@
 <script>
 	import Filters from '../lib/components/Filters.svelte';
-	import Table from '../lib/components/Table.svelte';
+	import TableWrapper from '../lib/components/TableWrapper.svelte';
 	import CollapsibleSection from '../lib/ui/CollapsibleSection.svelte';
 
 	import { siteTitle, siteDescription, siteLongDesc } from '$lib/config';
@@ -47,6 +47,10 @@
 				se mueve entre 3.000€ y 6.000€ es mejor tener cuatro personas que aportan 4.000 € que dos
 				personas que aportan 8.000 €.
 			</p>
+			<p>
+				Al final de la tabla puedes añadir nuevos participantes si quieres imaginar diferentes
+				escenarios.
+			</p>
 		{:else}
 			<CollapsibleSection headerText={'Más información'}>
 				<p>
@@ -65,17 +69,22 @@
 					se mueve entre 3.000€ y 6.000€ es mejor tener cuatro personas que aportan 4.000 € que dos
 					personas que aportan 8.000 €.
 				</p>
+				<p>
+					Al final de la tabla puedes añadir nuevos participantes si quieres imaginar diferentes
+					escenarios.
+				</p>
 			</CollapsibleSection>
 		{/if}
-
-		<p>
-			Al final de la tabla puedes añadir nuevos participantes si quieres imaginar diferentes
-			escenarios.
-		</p>
 	</section>
 	<section>
 		<Filters />
-		<Table />
+		<TableWrapper collapsedTable={!isDesktop} />
+		<p>
+			* <small
+				>Los datos sobre aportaciones iniciales provienen del GoogleForm. que rellenamos la semana
+				del 17 de junio de 2017. Se han anonimizado los datos.</small
+			>
+		</p>
 	</section>
 </main>
 
@@ -133,6 +142,7 @@
 	@media (min-width: 830px) {
 		header {
 			padding: 0 1rem;
+			padding-top: 4rem;
 
 			width: auto;
 		}
@@ -150,6 +160,7 @@
 		max-width: 50rem;
 		margin: 0 auto;
 		text-wrap: balance;
+		line-height: 3.5rem;
 	}
 	h3 {
 		font-weight: lighter;
