@@ -18,8 +18,8 @@
 	<section>
 		<p>{@html siteLongDesc}</p>
 		<p>
-			Por ejemplo, partiendo de los datos del formulario inicial* y una vez anonimizadas las
-			cantidades originales, {sample.name}, quien aporta inicialmente {format(sample.value)} €, tiene
+			Por poner un ejemplo, partiendo de los datos del formulario inicial* y una vez anonimizadas
+			las cantidades originales, {sample.name}, quien aporta inicialmente {format(sample.value)} €, tiene
 			que pagar
 			<span class="amount">
 				{format(sample['Cuota mensual'])} €/mes
@@ -27,7 +27,7 @@
 			durante <span class="amount small">{$years} años</span> para igualar la máxima aportación
 			realizada por {getMaxItems($maxItems)} ({format($maxItem.value)} €).
 			{#if $maintenance !== 0}
-				Esta cantidad incluye <span class="amount small">{$maintenance} €</span> de mantenimiento.
+				Esta cantidad incluye <span class="amount small">{$maintenance} €</span> mensuales de mantenimiento.
 			{:else}
 				Esta cantidad no incluye ningún gasto de mantenimiento. Aquellas peronas que realizan las
 				mayores aportaciones iniciales no pagan mensualidad en {$years} años.
@@ -39,7 +39,7 @@
 				seguridad al grupo, nos protege ante imprevistos y crea una reserva financiera para posibles
 				mejoras. En la situación actual y según estos cálculos, contamos con un presupuesto anual de {format(
 					$anualSave
-				)} €.
+				)} € (año vencido).
 			</p>
 			<p>
 				Tener cantidades similares entre todos los miembros es más beneficioso que tener algunas
@@ -82,7 +82,7 @@
 		<p>
 			* <small
 				>Los datos sobre aportaciones iniciales provienen del GoogleForm. que rellenamos la semana
-				del 17 de junio de 2017. Se han anonimizado los datos.</small
+				del 17 de junio de 2024. Se han anonimizado los datos.</small
 			>
 		</p>
 	</section>
